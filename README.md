@@ -6,13 +6,13 @@ systeme de vote à étoiles et comptage de vues
 <h2>Aide du plugin</h2>
 	
 <h3>Configuration</h3>
-  <h4>Via l'administration </h4>
-<h5>Affichage Du formulaire dans les pages 'articles'</h5>
+  <h3>Via l'administration </h3>
+<h3>Affichage Du formulaire dans les pages 'articles'</h3>
   <p>Le formulaire est afficher par défaut</p>
   <p>Dans la page configuration du plugin, il est possible de sélectionner les articles où ne pas afficher de votes à étoiles</p>
-  <h5>Options d'&Eacute;toiles</h5>
-<p>Dans la page configuration du plugin, vous pouvez selectionné le type d'étoile à afficher : &star; ou &starf;</p>
-  <h4>&Agrave; partir des fichiers du thème</h4>
+<h3>Options d'étoiles</h3>
+<p>Dans la page configuration du plugin, vous pouvez selectionné le type d'étoile à afficher :<big><big><big> &star; ou &starf;</big></big></big></p>
+  <h3>&Agrave; partir des fichiers du thème</h3>
   <p>4 Hooks sont disponibles et leur fonctionnement est basé sur lastartlist(), ce qui vous permet de choisir les données de vos articles à affichés et d'adapté la structure HTML à vos besoins: Quelques exemples ci dessous.</p>
   <p>Il est possible d'affichée des listes triées en fonction de</p>
   <ul>
@@ -27,7 +27,7 @@ systeme de vote à étoiles et comptage de vues
   </ul>
   <p>Par défaut 5 articles sont listés, cette option est modifiable dans l'administration</p>
   
-  <h4>Inclure un formulaire pour une page statique.</h4>
+  <h3>Inclure un formulaire pour une page statique.</h3>
    <p>Pour attribué un formulaire de vote à étoile pour une page statique, il suffit d'inserer une iframe en y passant <b>en parametre le chiffre 9999 + le numero de la page statique</b>, par exemple : <b>9999002</b> pour votre page statique numéro <b>2</b> (<b>002</b> dans l'admin).</p>
   <p>Cette Iframe peut aussi être intégré dans le template de la fonction <a href="https://wiki.pluxml.org/docs/develop/plxshow.html#lastartlist"><code>lastartlist()</code> </a> si vous souhaitez listez en tout ou partie vos articles dans une page statique ou autres endroits de votre thème.</p>
   <p>Voici un exemple listant et affichant tous vos articles de la catégorie 1 avec son image d'accroche:</p>
