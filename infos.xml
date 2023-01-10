@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <title><![CDATA[plxStarView]]></title>
+    <author><![CDATA[G.Cyrillus]]></author>
+    <version>1.0</version>
+    <date>10/01/2023</date>
+    <site>http://re7net.com</site>
+    <description><![CDATA[ Ajoute ou pas un formulaire à étoile dans les articles sans Hook.
+  |Compte le nombre de votes et de vues (independement du formulaire). 
+ 
+  |Peut-être inserer via une iframe dans une page statique ou un endroit de de votre théme.
+  |4 hooks permettent d'aficher:  .
+	|	-les mieux notés
+ 	|	-les plus vus
+	|	-les moins bien notés
+	|	-les moins vus]]></description>
+	<scope></scope>
+</document>
