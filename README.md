@@ -3,7 +3,9 @@ systeme de vote à étoiles et comptage de vues
 
 
 <div id="help">
-<h2>Aide du plugin</h2>
+<h2>Aide du plugin plxStarView</h2>
+
+<p>Un sujet est ouvert sur le forum de pluxml https://forum.pluxml.org/discussion/7331/plugin-plxstarview </p> 
 	
 <h3>Configuration</h3>
   <h3>Via l'administration </h3>
