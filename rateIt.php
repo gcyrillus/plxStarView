@@ -4,8 +4,8 @@
 # Définition des constantes 
 $gu_sub = explode('plugins',$_SERVER['DOCUMENT_ROOT'].$_SERVER['PHP_SELF']);
 $gu_sub = str_replace($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR,'',$gu_sub[0]);
-$plugName = basename(__DIR__ );
-define('PLX_ROOT',$gu_sub); 
+$plugName =basename( __DIR__ );
+define('PLX_ROOT','../../'); 
 define('PLX_CORE', PLX_ROOT.'core'.DIRECTORY_SEPARATOR);
 define('PLX_PLUGINS', PLX_ROOT.'plugins'.DIRECTORY_SEPARATOR);
 
@@ -39,7 +39,9 @@ include_once(PLX_CORE.'lib/class.plx.show.php');
 
 # Creation de l'objet principal et lancement du traitement
 $plxMotor = plxMotor::getInstance();
-// on s'occupe de notre plugin
+# on s'occupe de notre plugin
+
+#Infos du plugin
 $plxMotor->plxPlugins->plug = array(
 			'dir' 			=> PLX_PLUGINS,
 			'name' 			=> $plugName,
@@ -47,12 +49,66 @@ $plxMotor->plxPlugins->plug = array(
 			'parameters.xml'=> PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.$plugName.'.xml',
 			'infos.xml'		=> PLX_PLUGINS.$plugName.'/infos.xml'
 		);
-// on declare le plugin concerné
+		
+# on declare le plugin concerné
 $plxPlugin = $plxMotor->plxPlugins->aPlugins[$plugName];
-// on verifie que notre plugin est bien là sinon on sort
 
-# Traitement des formulaires en POST (ajax ou pas)
+# enfin on verifie que notre plugin est bien là et actif sinon on sort
+
 if (!isset($plxMotor->plxPlugins->aPlugins[$plugName])) { exit;}
+
+# maintenant on utilise le plugin
+
+# quelques verifications:
+#on verifie que la requête correspond à un article ou une page statique
+$badMessage = '<!DOCTYPE html>
+		<html>
+		<meta charset="UTF-8">
+		<title>(◠﹏◠✿)</title>
+		<head><style>html{min-height:100vh;display:flex;}body{margin:auto;font-size:8vw;color:hotpink}</style></head>
+		<body>(◠﹏◠✿) bad robot request</body>
+		</html>';
+# A est-c une page statique ?
+if(isset($_POST['artId'])) {
+	$request =str_pad( trim($_POST['artId']),4,"0", STR_PAD_LEFT) ;
+	if(strlen($request) == '4' ){
+		# c'est un article
+		# existe t-il ?
+		if(!array_key_exists($request , $plxMotor->plxGlob_arts->aFiles)) {
+		echo $badMessage;
+		}
+	}
+	if(strlen($request) == '7' ){
+		# c'est une page statique
+		# existe t'elle?
+		$request = substr($request, -3);
+		if(!array_key_exists($request , $plxMotor->aCats)) {
+		echo $badMessage;
+		exit;
+		}
+	}
+}
+if(isset($_GET['art'])) {
+$request =str_pad( trim($_GET['art']),4,"0", STR_PAD_LEFT) ;
+	if(strlen($request) == '4' ){
+		# c'est un article
+		# existe t-il ?
+		if(!array_key_exists($request , $plxMotor->plxGlob_arts->aFiles)) {
+		echo $badMessage;
+		exit;
+		}
+	}
+	if(strlen($request) == '7' ){
+		# c'est une page statique
+		# existe t'elle?
+		$request = substr($request, -3);
+		if(!array_key_exists($request , $plxMotor->aCats)) {
+		echo $badMessage;
+		exit;
+		}
+	}
+}
+# Traitement des formulaires en POST (ajax ou pas)
 if(isset($_POST['artId'])) {
 $id = $_POST['artId'];
 if(isset($_POST['a'])) {$points = intval($_POST['a']);}
