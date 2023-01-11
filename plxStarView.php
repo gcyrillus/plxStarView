@@ -374,7 +374,7 @@ class plxStarView extends plxPlugin {
         	# pour accéder au plugin	
 			$plxMotor = plxMotor::getInstance();
 			$plugin = $plxMotor->plxPlugins->aPlugins['<?= __CLASS__ ?>']; 
-			$art['content'] .=  $plugin->getData($art['numero']);
+			if($plxMotor->mode =='article')  $art['content'] .=  $plugin->getData($art['numero']);
 <?php
             echo self::END_CODE;
 	}
