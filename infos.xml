@@ -2,8 +2,8 @@
 <document>
     <title><![CDATA[plxStarView]]></title>
     <author><![CDATA[G.Cyrillus]]></author>
-    <version>1.0</version>
-    <date>10/01/2023</date>
+    <version>1.01</version>
+    <date>11/01/2023</date>
     <site>http://re7net.com</site>
     <description><![CDATA[ Ajoute ou pas un formulaire à étoile dans les articles sans Hook.
   |Compte le nombre de votes et de vues (independement du formulaire). 
@@ -13,6 +13,7 @@
 	|	-les mieux notés
  	|	-les plus vus
 	|	-les moins bien notés
-	|	-les moins vus]]></description>
+	|	-les moins vus
+   | filtre des requetes sur article ou page statiques existantes.]]></description>
 	<scope></scope>
 </document>
