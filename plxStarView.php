@@ -3,7 +3,7 @@ class plxStarView extends plxPlugin {
 
 /**
  * plxStarView
- *
+ * Version 1.2 - 15 Jan 2023
  * Ajoute un formulaire à étoile dans les articles sans Hook.
  * Compte le nombre de votes et de vues
  *
@@ -97,10 +97,10 @@ class plxStarView extends plxPlugin {
 	
 	public function showData($id) {
 	if(!file_exists(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json')) { $this->makeJson();	}
-	if($this->getParam('stars')=='0') {$stars='☆';} else {$stars='★';} 
+	if($this->getParam('stars')=='0') {$stars='☆';} elseif($this->getParam('stars')=='1')  {$stars='★';}elseif($this->getParam('stars')=='2')  {$stars='☀';} elseif($this->getParam('stars')=='3')  {$stars='♥';}
 		$jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.__CLASS__.'/plxStarsDatas.json'), true);
 		$disabled=' type="submit" ';
-		
+		if(!array_key_exists('ipsView', $jsonDatas[$id]))$jsonDatas[$id]['ipsView'][]='0.0.0.0';		
 		// si pas de données sur cette article, on le crée
 		if (!array_key_exists($id,$jsonDatas)) {
 			$plxMotor = plxMotor::getInstance();
@@ -108,7 +108,7 @@ class plxStarView extends plxPlugin {
 			echo $title;
 			$title =explode(".",$title) ;
 			end($title);
-			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1'	);	
+			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1', 'ipsView'=>'0.0.0.0'	);	
 			file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json', json_encode($jsonDatas,true) );	
 			$this->showData($id);
 		}
@@ -116,7 +116,11 @@ class plxStarView extends plxPlugin {
 			if(in_array(trim($_SERVER['REMOTE_ADDR']),$jsonDatas[$id]['ips'])) { $disabled= ' type="submit" disabled="disabled" title="max: 1 vote"';}
 			else{
 						$plxMotor = plxMotor::getInstance();
-				if ($plxMotor->mode =='article') {$jsonDatas[$id]['nbview']=$jsonDatas[$id]['nbview']+1;file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.__CLASS__.'/plxStarsDatas.json', json_encode($jsonDatas,true) );}
+				if ($plxMotor->mode =='article' &&  @!in_array(trim($_SERVER['REMOTE_ADDR']),$jsonDatas[$id]['ipsView'])   ) {
+					$jsonDatas[$id]['nbview']=$jsonDatas[$id]['nbview']+1;
+					$jsonDatas[$id]['ipsView'][] = trim($_SERVER['REMOTE_ADDR']);
+					file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.__CLASS__.'/plxStarsDatas.json', json_encode($jsonDatas,true) );
+					}
 				}
 			if($jsonDatas[$id]['rated'] =='1') {
 			echo '
@@ -139,26 +143,31 @@ class plxStarView extends plxPlugin {
 	# crée l'entrée si celle-ci est manquante, puis stocke le formulaire
 	public function getData($id) {
 	if(!file_exists(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json')) { $this->makeJson();	}
-	if($this->getParam('stars')=='0') {$stars='☆';} else {$stars='★';}
+	if($this->getParam('stars')=='0') {$stars='☆';} elseif($this->getParam('stars')=='1')  {$stars='★';}elseif($this->getParam('stars')=='2')  {$stars='☀';} elseif($this->getParam('stars')=='3')  {$stars='♥';}
 		$jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json'), true);
 		$disabled=' type="submit" ';
 		$id=intval($id);
+		if(!array_key_exists('ipsView', $jsonDatas[$id]))$jsonDatas[$id]['ipsView'][]='0.0.0.0';
 		// si pas de données sur cette article, on le crée
 		if (!array_key_exists($id,$jsonDatas)) {
 			$plxMotor = plxMotor::getInstance();
 			$title= $plxMotor->plxGlob_arts->aFiles[str_pad($id, 4, "0", STR_PAD_LEFT)];
 			$title =explode(".",$title) ;
 			end($title);
-			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1'	);	
+			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1', 'ipsView'=>'0.0.0.0'	);	
 			file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json', json_encode($jsonDatas,true) );	
 			$this->getData($id);
 		}
         else {
 			if(in_array(trim($_SERVER['REMOTE_ADDR']),$jsonDatas[$id]['ips'])) { $disabled= ' type="submit" disabled="disabled" title="max: 1 vote"';}
 			else{
-						$plxMotor = plxMotor::getInstance();
-				if ($plxMotor->mode =='article') {$jsonDatas[$id]['nbview']=$jsonDatas[$id]['nbview']+1;file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.__CLASS__.'/plxStarsDatas.json', json_encode($jsonDatas,true) );}
+				$plxMotor = plxMotor::getInstance();
+				if ($plxMotor->mode =='article' &&  @!in_array(trim($_SERVER['REMOTE_ADDR']),$jsonDatas[$id]['ipsView'])   ) {
+					$jsonDatas[$id]['nbview']=$jsonDatas[$id]['nbview']+1;
+					$jsonDatas[$id]['ipsView'][] = trim($_SERVER['REMOTE_ADDR']);
+					file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.__CLASS__.'/plxStarsDatas.json', json_encode($jsonDatas,true) );
 				}
+			}
 			if($jsonDatas[$id]['rated'] =='1') {
 			$form= '
 				<form style="--average:'.$jsonDatas[$id]['average'].'%" id="rate-'.intval($id).'" action="../../plugins/'. __CLASS__ .'/rateIt.php" method="post">
@@ -327,8 +336,7 @@ class plxStarView extends plxPlugin {
 		
 	?>
 			<!-- <?= __CLASS__ ?> plugin -->
-			<script>
-				window.onload = function() {				
+			<script>				
 					for (let e of  document.querySelectorAll('form[id^="rate-"]')) {	
 						let formId=e.getAttribute('id');
 						let id = formId.slice(5); 
@@ -362,7 +370,6 @@ class plxStarView extends plxPlugin {
 						}); 	
 						
 					}
-				}
 			</script>
 				<?php
 	}
@@ -374,7 +381,7 @@ class plxStarView extends plxPlugin {
         	# pour accéder au plugin	
 			$plxMotor = plxMotor::getInstance();
 			$plugin = $plxMotor->plxPlugins->aPlugins['<?= __CLASS__ ?>']; 
-			if($plxMotor->mode =='article')  $art['content'] .=  $plugin->getData($art['numero']);
+			if($plxMotor->mode =='article') $art['content'] .=  $plugin->getData($art['numero']);
 <?php
             echo self::END_CODE;
 	}
