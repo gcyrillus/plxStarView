@@ -116,7 +116,7 @@ if(isset($_POST['b'])) {$points = intval($_POST['b']);}
 if(isset($_POST['c'])) {$points = intval($_POST['c']);}
 if(isset($_POST['d'])) {$points = intval($_POST['d']);}
 if(isset($_POST['e'])) {$points = intval($_POST['e']);}
-	if($plxPlugin->getParam('stars')=='0') {$stars='☆';} else {$stars='★';}
+if($plxPlugin->getParam('stars')=='0') {$stars='☆';} elseif($plxPlugin->getParam('stars')=='1')  {$stars='★';}elseif($plxPlugin->getParam('stars')=='2')  {$stars='♡';} elseif($plxPlugin->getParam('stars')=='3')  {$stars='♥';}
 
 		//get datas
 $jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.$plugName.'/plxStarsDatas.json'), true);
@@ -156,7 +156,7 @@ file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.$plugName.'/plxStarsDatas.
 #traitement du formulaire pour affichage en GET (iframe sans ajax)
 if(isset($_GET['art'])) {
 	echo '<!DOCTYPE html>
-		<html>
+		<html lang="fr">
 		<meta charset="UTF-8">
 		<title>vote</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1">';

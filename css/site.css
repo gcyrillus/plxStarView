@@ -13,6 +13,7 @@ form[id^="rate-"] {
 form[id^="rate-"]  fieldset {
   background: linear-gradient(90deg, gold var(--average), gray var(--average)) 95% center / 99% 2em
 	no-repeat;
+  -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   border-color: silver;
@@ -21,6 +22,7 @@ form[id^="rate-"]  fieldset {
   border:revert;
   padding:revert;
   border-radius:inherit;
+  display:block;
 }
 form[id^="rate-"]  legend {
   line-height:0;
@@ -51,6 +53,7 @@ form[id^="rate-"]  button {
   color: inherit;
   width:2ch;
   padding: 0;
+  display:inline-block!important;
 }
 form[id^="rate-"]  fieldset:hover button:not([disabled]) {
   color: tomato;
