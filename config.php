@@ -4,7 +4,7 @@
 	plxToken::validateFormToken($_POST);
 	
 	#chargement du fichier json
-	$jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.$plxPlugin::class.'/plxStarsDatas.json'), true);
+	$jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.basename( __DIR__).'/plxStarsDatas.json'), true);
 	    if(!empty($_POST)) {
 			$plxPlugin->setParam( 'nbArts', 	$_POST['nbArts'] , 'numeric') ; 
 			$plxPlugin->setParam( 'stars', 	$_POST['stars'] , 'numeric') ; 	
@@ -18,7 +18,7 @@
 				
 			}
 			
-			file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.$plxPlugin::class.'/plxStarsDatas.json', json_encode($jsonDatas,true) );
+			file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.basename( __DIR__).'/plxStarsDatas.json', json_encode($jsonDatas,true) );
 			}
 		header('Location: parametres_plugin.php?p='.$plugin);
 	exit;
