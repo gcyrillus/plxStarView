@@ -13,7 +13,7 @@ systeme de vote à étoiles et comptage de vues
   <p>Le formulaire est afficher par défaut</p>
   <p>Dans la page configuration du plugin, il est possible de sélectionner les articles où ne pas afficher de votes à étoiles</p>
 <h3>Options d'étoiles</h3>
-<p>Dans la page configuration du plugin, vous pouvez selectionné le type d'étoile à afficher :<big><big><big> &star; ou &starf;</big></big></big></p>
+<p>Dans la page configuration du plugin, vous pouvez selectionné le type d'étoile à afficher :<big><big><big> &star; ou &starf; ou &#9728; ou &hearts;</big></big></big></p>
   <h3>&Agrave; partir des fichiers du thème</h3>
   <p>4 Hooks sont disponibles et leur fonctionnement est basé sur lastartlist(), ce qui vous permet de choisir les données de vos articles à affichés et d'adapté la structure HTML à vos besoins: Quelques exemples ci dessous.</p>
   <p>Il est possible d'affichée des listes triées en fonction de</p>
