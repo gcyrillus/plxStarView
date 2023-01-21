@@ -4,7 +4,7 @@
 	plxToken::validateFormToken($_POST);
 	
 	#chargement du fichier json
-	$jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.basename( __DIR__).'/plxStarsDatas.json'), true);
+	$jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.basename( __DIR__) .'/plxStarsDatas.json'), true);
 	    if(!empty($_POST)) {
 			$plxPlugin->setParam( 'nbArts', 	$_POST['nbArts'] , 'numeric') ; 
 			$plxPlugin->setParam( 'stars', 	$_POST['stars'] , 'numeric') ; 	
@@ -31,13 +31,14 @@
 	<fieldset>
 		<legend>Configuration</legend>
 			<label><?php echo $plxPlugin->getLang('L_NBARTS_SHOW')  ?>	:</label><input type="text" name="nbArts" size="2" value="<?php  echo $var['nbArts'] ?>" />
-			<label><?php echo $plxPlugin->getLang('L_STARS')?> 			:</label><?php plxUtils::printSelect('stars',      array('0'=>'&star;','1'=>'&starf;'), $var['stars']);?>
+			<label><?php echo $plxPlugin->getLang('L_STARS')?> 			:</label><?php plxUtils::printSelect('stars', array('0'=>'&star;','1'=>'&starf;', '2'=> '&#9728;', '3' => '&hearts;'), $var['stars']); ?>
 			<label><?php echo $plxPlugin->getLang('L_SAVE_TO_UPDATE') ?>:</label><input type="submit" name="submit" value="<?php $plxPlugin->lang('L_SAVE') ?>" />
 			<?php echo plxToken::getTokenPostMethod() ?>
 	</fieldset>
 	<fieldset class="artToExclude">
 		<legend>Articles à exclures</legend>
 		<?php 	
+		krsort($jsonDatas);
 			foreach ($jsonDatas as $key => $value) {
 				$checked='';
 			if($value['rated'] =='0') $checked='checked="checked"';
@@ -45,7 +46,7 @@
 				
 			}
 		?>
-			<label><?php echo $plxPlugin->getLang('L_SAVE_TO_UPDATE') ?>:</label><input type="submit" name="submitRated" value="<?php $plxPlugin->lang('L_SAVE') ?>" />
+			<p style="grid-column:1/-1;display:flex;gap:1em;align-items:center;background:#efefef;padding:0.5rem;border-radius:3px;"><label><?php echo $plxPlugin->getLang('L_SAVE_TO_UPDATE') ?>:</label><input type="submit" name="submitRated" value="<?php $plxPlugin->lang('L_SAVE') ?>" /></p>
 	</fieldset>
 </form>
 <style>

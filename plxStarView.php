@@ -3,7 +3,7 @@ class plxStarView extends plxPlugin {
 
 /**
  * plxStarView
- * Version 1.2 - 15 Jan 2023
+ *
  * Ajoute un formulaire à étoile dans les articles sans Hook.
  * Compte le nombre de votes et de vues
  *
@@ -108,7 +108,7 @@ class plxStarView extends plxPlugin {
 			echo $title;
 			$title =explode(".",$title) ;
 			end($title);
-			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1', 'ipsView'=>'0.0.0.0'	);	
+			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1' , 'ipsView' => array('0.0.0.0') 		);	
 			file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json', json_encode($jsonDatas,true) );	
 			$this->showData($id);
 		}
@@ -147,22 +147,22 @@ class plxStarView extends plxPlugin {
 		$jsonDatas = json_decode(file_get_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json'), true);
 		$disabled=' type="submit" ';
 		$id=intval($id);
-		if(!array_key_exists('ipsView', $jsonDatas[$id]))$jsonDatas[$id]['ipsView'][]='0.0.0.0';
 		// si pas de données sur cette article, on le crée
 		if (!array_key_exists($id,$jsonDatas)) {
 			$plxMotor = plxMotor::getInstance();
 			$title= $plxMotor->plxGlob_arts->aFiles[str_pad($id, 4, "0", STR_PAD_LEFT)];
 			$title =explode(".",$title) ;
 			end($title);
-			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1', 'ipsView'=>'0.0.0.0'	);	
+			$jsonDatas[$id]= array('nbvote'=>'0' , 'points'=>'0', 'average'=>'0', 'nbview' =>'0', 'ips'=> array('0.0.0.0'), 'title' => str_replace('-',' ',prev($title)) , 'rated' => '1' , 'ipsView' => array('0.0.0.0') 	);
 			file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'. __CLASS__ .'/plxStarsDatas.json', json_encode($jsonDatas,true) );	
 			$this->getData($id);
 		}
         else {
+			if(!array_key_exists('ipsView', $jsonDatas[$id])){$jsonDatas[$id]['ipsView'][]='0.0.0.0';}
 			if(in_array(trim($_SERVER['REMOTE_ADDR']),$jsonDatas[$id]['ips'])) { $disabled= ' type="submit" disabled="disabled" title="max: 1 vote"';}
 			else{
 				$plxMotor = plxMotor::getInstance();
-				if ($plxMotor->mode =='article' &&  @!in_array(trim($_SERVER['REMOTE_ADDR']),$jsonDatas[$id]['ipsView'])   ) {
+				if ($plxMotor->mode =='article' &&  !in_array(trim($_SERVER['REMOTE_ADDR']),$jsonDatas[$id]['ipsView'])   ) {
 					$jsonDatas[$id]['nbview']=$jsonDatas[$id]['nbview']+1;
 					$jsonDatas[$id]['ipsView'][] = trim($_SERVER['REMOTE_ADDR']);
 					file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.__CLASS__.'/plxStarsDatas.json', json_encode($jsonDatas,true) );
