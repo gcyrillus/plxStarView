@@ -138,19 +138,24 @@ file_put_contents(PLX_ROOT.PLX_CONFIG_PATH.'plugins/'.$plugName.'/plxStarsDatas.
 		/*html{overflow:hidden;}*/';
 		include('../../plugins/'.$plugName.'/css/site.css');				
 		echo '</style>';
-		echo '
-		<form style="--average:'.$jsonDatas[$id]['average'].'%" id="rate-'.$id.'" action="../../plugins/'.$plugName.'/rateIt.php" method="post">
-		<fieldset>
-			<legend class="rate-infos">Votes <sup>('.$jsonDatas[$id]['nbvote'].' / '.$jsonDatas[$id]['average'].'%)</sup><sub>vue(s)'.$jsonDatas[$id]['nbview'].'</sub></legend>
-			<input type="hidden" name="artId" value="'.$id.'">
-			<button name="e" value="2"  '.$disabled.'>'.$stars.'</button>
-			<button name="d" value="4"  '.$disabled.'>'.$stars.'</button>
-			<button name="c" value="6"  '.$disabled.'>'.$stars.'</button>
-			<button name="b" value="8"  '.$disabled.'>'.$stars.'</button>
-			<button name="a" value="10" '.$disabled.'>'.$stars.'</button>
-		 </fieldset>
-		 </form>
-		';		
+		if($plxPlugin->getParam('formLegend'	)== '1') {$legend = '<legend class="rate-infos">'.$plxPlugin->getLang('L_RATE_IT').'</legend>';} else {$legend='';}
+		if($plxPlugin->getParam('formRating'	)== '1') {$rating = '<sup>'.$jsonDatas[$id]['nbvote'].' '.$plxPlugin->getLang('L_RATES').'  / '.$plxPlugin->getLang('L_AVERAGE').' '.$jsonDatas[$id]['average'] / 10 .'</sup>';} else {$rating='';}
+		if($plxPlugin->getParam('formShow'	)== '1') {$show = '<sup>'.$plxPlugin->getLang('L_VIEWS').' '.$jsonDatas[$id]['nbview'].'</sup>';} else {$show='';}
+		$form= '
+			<form style="--average:'.$jsonDatas[$id]['average'].'%" id="rate-'.intval($id).'" action="../../plugins/'. basename(__DIR__ ).'/rateIt.php" method="post">
+			  <fieldset>
+				'.$legend.'
+				<input type="hidden" name="artId" value="'.intval($id).'">
+				<button name="e" value="2"  '.$disabled.'>'.$stars.'</button>
+				<button name="d" value="4"  '.$disabled.'>'.$stars.'</button>
+				<button name="c" value="6"  '.$disabled.'>'.$stars.'</button>
+				<button name="b" value="8"  '.$disabled.'>'.$stars.'</button>
+				<button name="a" value="10" '.$disabled.'>'.$stars.'</button>
+			  </fieldset>
+			  '.$rating.'
+			  '.$show.'
+			</form>';
+			echo $form;				
 }
 
 #traitement du formulaire pour affichage en GET (iframe sans ajax)
